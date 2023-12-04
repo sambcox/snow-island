@@ -6,21 +6,14 @@ import (
 	"strings"
 )
 
-func ValidateGame(game string) (bool, int) {
-	limitMap := map[string]int{
-		"blue":  14,
-		"red":   12,
-		"green": 13,
+func ValidateGame(game string) int {
+	maxCubeMap := map[string]int{
+		"blue":  0,
+		"red":   0,
+		"green": 0,
 	}
 
 	gameBagSplit := strings.Split(game, ": ")
-
-	gameNumber, error := strconv.Atoi(strings.Trim(gameBagSplit[0], "Game "))
-
-	if error != nil {
-		fmt.Println("Error converting string to int:", error)
-		return false, 0
-	}
 
 	bagSlice := strings.Split(gameBagSplit[1], "; ")
 
@@ -37,16 +30,17 @@ func ValidateGame(game string) (bool, int) {
 			cubeAmount, error := strconv.Atoi(cubeSlice[0])
 			if error != nil {
 				fmt.Println("Error converting string to int:", error)
-				return false, 0
+				return 0
 			}
 
 			cubeColor := strings.Trim(cubeSlice[1], ",")
 
-			if cubeAmount > limitMap[cubeColor] {
-				return false, gameNumber
+			if maxCubeMap[cubeColor] < cubeAmount {
+				maxCubeMap[cubeColor] = cubeAmount
 			}
 		}
 	}
 
-	return true, gameNumber
+	gamePower := maxCubeMap["blue"] * maxCubeMap["red"] * maxCubeMap["green"]
+	return gamePower
 }

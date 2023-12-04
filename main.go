@@ -17,18 +17,16 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	totalPossible := 0
+	totalPower := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		gameBool, gameNumber := cubegamevalidator.ValidateGame(line)
+		gamePower := cubegamevalidator.ValidateGame(line)
 
-		if gameBool {
-			totalPossible += gameNumber
-		}
+		totalPower += gamePower
 	}
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error reading file:", err)
 	}
-	fmt.Println("Sum of total possible games:", totalPossible)
+	fmt.Println("Sum of total game power:", totalPower)
 }
